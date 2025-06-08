@@ -140,10 +140,15 @@ Module.register("MMM-DCMetroTimes", {
                     GR: 'Green',
                     OR: 'Orange',
                     RD: 'Red',
-                    SV: 'Snow',
+                    SV: 'Silver',
                     YL: 'Yellow'
                     };
         return colorValues[theColorCode];
+    },
+    // returns HTML for a colored circle for a given line code
+    getLineCircleHTML: function(theColorCode) {
+        var color = this.getLineCodeColor(theColorCode);
+        return "<span class='line-circle' style='background-color:" + color + "'></span>";
     },
     // the get dom handler
     getDom: function() {    
@@ -190,19 +195,15 @@ Module.register("MMM-DCMetroTimes", {
                     var incidentHTML = "";
                     for (var lineIndex = 0; lineIndex < incidentCount; lineIndex++){
                         var lineCode = this.dataIncidentLinesList[lineIndex];
-                        if (this.config.colorizeLines)
-                            incidentHTML += "<div style=\'display:inline;color:"
-                            + this.getLineCodeColor(lineCode) 
-                            + "\'>";
-                        else
-                            incidentHTML += "<div style=\'display:inline;\'>";
-                        incidentHTML += lineCode + "</div>";
+                        var colorStyle = this.config.colorizeLines ? "color:" + this.getLineCodeColor(lineCode) : "";
+                        incidentHTML += "<div style=\'display:inline;" + colorStyle + "\'>";
+                        incidentHTML += this.getLineCircleHTML(lineCode) + lineCode + "</div>";
                         if (lineIndex < incidentCount - 1)
                             incidentHTML += "&nbsp;&nbsp;";
                     }
                     iElement.innerHTML = incidentHTML;
                 }
-                else {                    
+                else {
                      // create a string and add each incident line's color to the string
                     iElement.align = "left";
                     var incidentHTML = "";
@@ -212,16 +213,12 @@ Module.register("MMM-DCMetroTimes", {
                         incidentHTML += "Incidents Reported On ";
                     for (var lineIndex = 0; lineIndex < incidentCount; lineIndex++){
                         var lineCode = this.dataIncidentLinesList[lineIndex];
-                        if ((lineIndex === incidentCount - 1) 
+                        if ((lineIndex === incidentCount - 1)
                             && (this.dataIncidentLinesList.length > 1))
                             incidentHTML += "and ";
-                        if (this.config.colorizeLines)
-                            incidentHTML += "<div style=\'display:inline;color:"
-                            + this.getLineCodeColor(lineCode) 
-                            + "\'>";
-                        else
-                            incidentHTML += "<div style=\'display:inline;\'>";
-                        incidentHTML += this.getLineCodeName(lineCode) + "</div>";
+                        var colorStyle = this.config.colorizeLines ? "color:" + this.getLineCodeColor(lineCode) : "";
+                        incidentHTML += "<div style=\'display:inline;" + colorStyle + "\'>";
+                        incidentHTML += this.getLineCircleHTML(lineCode) + this.getLineCodeName(lineCode) + "</div>";
                         if ((lineIndex !== incidentCount - 1)
                             && (incidentCount > 2))
                             incidentHTML += ",";
@@ -290,7 +287,7 @@ Module.register("MMM-DCMetroTimes", {
                             var lineElement = document.createElement("td");
                             if (this.config.colorizeLines)
                                 lineElement.style = 'color:' + this.getLineCodeColor(cTrain.Line);
-                            lineElement.innerHTML = cTrain.Line;
+                            lineElement.innerHTML = this.getLineCircleHTML(cTrain.Line) + cTrain.Line;
                             var destElement = document.createElement("td");
                             destElement.align = "left";
                             destElement.innerHTML = cTrain.Destination;
@@ -398,9 +395,13 @@ Module.register("MMM-DCMetroTimes", {
             }
         } 
         // return the generated code
-        return wrapper;     
+        return wrapper;
+    },
+    // load custom styles for colored circles
+    getStyles: function() {
+        return [this.file("MMM-DCMetroTimes.css")];
     }
-    
+
 });
 
 // ------------ END -------------

@@ -1,0 +1,8 @@
+.line-circle {
+  display: inline-block;
+  width: 0.6em;
+  height: 0.6em;
+  margin-right: 4px;
+  border-radius: 50%;
+  vertical-align: middle;
+}

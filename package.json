@@ -1,0 +1,16 @@
+{
+  "name": "mmm-dcmetrotimes",
+  "version": "1.0.0",
+  "description": "This is a module for the [MagicMirror](https://github.com/MichMich/MagicMirror) project, forked from [AdamMoses-GitHub MMM-DCMetroTrainTimes](https://github.com/AdamMoses-GitHub/MMM-DCMetroTrainTimes).",
+  "main": "MMM-DCMetroTimes.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
